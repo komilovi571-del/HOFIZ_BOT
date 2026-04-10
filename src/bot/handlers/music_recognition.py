@@ -182,8 +182,16 @@ async def _send_music_result(
 
     text += "\n⚡️ @hofiz_bot"
 
+    # Lyrics matnini Redis'ga saqlash (1 soat, foydalanuvchi ID bo'yicha)
+    if result.lyrics_text:
+        await RedisService.set(
+            f"lyrics:{message.from_user.id}",
+            result.lyrics_text[:4000],
+            3600,
+        )
+
     kb = music_result_kb(
-        lyrics_url=result.lyrics_url or (result.lyrics_text[:1] if result.lyrics_text else ""),
+        lyrics_url=result.lyrics_url or ("1" if result.lyrics_text else ""),
         spotify_url=result.spotify_url,
         apple_url=result.apple_music_url,
     )
@@ -213,13 +221,22 @@ async def _send_music_result(
 @router.callback_query(lambda c: c.data == "show_lyrics")
 async def show_lyrics_callback(callback: CallbackQuery):
     """Qo'shiq matni tugmasi bosilganda."""
-    # Oxirgi aniqlangan qo'shiq matnini ko'rsatish
     await callback.answer("📝 Qo'shiq matni yuklanmoqda...")
 
-    # TODO: lyrics_text ni Redis'dan olish va ko'rsatish
-    await callback.message.answer(
-        "📝 <b>Qo'shiq matni</b>\n\n"
-        "🔗 Qo'shiq matnini Genius.com saytidan ko'rishingiz mumkin.\n"
-        "⚡️ To'liq lyrics integratsiyasi tez orada!",
-        parse_mode="HTML",
-    )
+    lyrics = await RedisService.get(f"lyrics:{callback.from_user.id}")
+    if lyrics:
+        # Telegram 4096 limit — agar uzun bo'lsa bo'lib yuborish
+        header = "📝 <b>Qo'shiq matni</b>\n\n"
+        if len(header) + len(lyrics) <= 4096:
+            await callback.message.answer(header + lyrics, parse_mode="HTML")
+        else:
+            await callback.message.answer(header, parse_mode="HTML")
+            # Uzun matni qismlarga bo'lib yuborish
+            for i in range(0, len(lyrics), 4096):
+                await callback.message.answer(lyrics[i:i + 4096])
+    else:
+        await callback.message.answer(
+            "📝 <b>Qo'shiq matni</b>\n\n"
+            "😔 Matn topilmadi. Genius.com saytidan qidiring.",
+            parse_mode="HTML",
+        )

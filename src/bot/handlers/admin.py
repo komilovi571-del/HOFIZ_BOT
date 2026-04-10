@@ -371,9 +371,7 @@ async def admin_channels(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     async with async_session() as session:
         repo = ChannelRepo(session)
-        channels = await repo.get_active()
-        # Nofaol kanallarni ham olish
-        all_channels = channels  # TODO: get_all method qo'shish
+        all_channels = await repo.get_all()
 
     await callback.message.edit_text(
         f"📺 <b>Kanallar boshqaruvi</b>\n\n"

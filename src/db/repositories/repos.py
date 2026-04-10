@@ -152,6 +152,11 @@ class ChannelRepo:
         )
         await self.s.commit()
 
+    async def get_all(self) -> Sequence[Channel]:
+        """Barcha kanallar — faol va nofaol."""
+        result = await self.s.execute(select(Channel).order_by(Channel.is_active.desc()))
+        return result.scalars().all()
+
 
 # ── Downloads ──────────────────────────────────────────
 
