@@ -6,7 +6,7 @@ dockerfilePath = "Dockerfile.bot"
 
 [deploy]
 # DB migratsiyasini bajargandan keyin botni ishga tushirish
-startCommand = "echo '=== BOOT ===' && alembic upgrade head && echo '=== ALEMBIC DONE ===' && python -u -m src.bot.main 2>&1"
+startCommand = "echo '=== BOOT ===' ; alembic upgrade head 2>&1 ; echo ALEMBIC_EXIT=$? ; python -u -m src.bot.main 2>&1"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
