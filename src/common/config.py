@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from pydantic_settings import BaseSettings
-from pydantic import Field
-from typing import List, Optional
+from pydantic import Field, field_validator
+from typing import List, Optional, Union
 
 
 class Settings(BaseSettings):
@@ -14,6 +14,15 @@ class Settings(BaseSettings):
 
     # Admin
     admin_ids: List[int] = Field(default_factory=list)
+
+    @field_validator("admin_ids", mode="before")
+    @classmethod
+    def parse_admin_ids(cls, v):
+        if isinstance(v, str):
+            return [int(x.strip()) for x in v.split(",") if x.strip()]
+        if isinstance(v, int):
+            return [v]
+        return v
 
     # Database (Railway injects DATABASE_URL directly)
     database_url_override: Optional[str] = Field(default=None, alias="DATABASE_URL")
