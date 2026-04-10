@@ -154,7 +154,7 @@ async def broadcast_content(message: Message, state: FSMContext):
     await message.answer(
         f"📢 <b>Xabar tasdiqlash</b>\n\n"
         f"Maqsad: <b>{'Barchaga' if target == 'all' else 'Faollarga' if target == 'active' else 'Premiumlarga'}</b>\n"
-        f"Matn: {(content.get('text') or 'yo'q')[:100]}\n"
+        f"Matn: {(content.get('text') or 'yoq')[:100]}\n"
         f"Rasm: {'✅' if content.get('photo') else '❌'}\n"
         f"Video: {'✅' if content.get('video') else '❌'}\n\n"
         f"Yuborishni tasdiqlaysizmi?",
