@@ -523,7 +523,7 @@ async def admin_backup(callback: CallbackQuery):
 
     text = (
         "💾 <b>Zaxira nusxa boshqaruvi</b>\n\n"
-        f"📅 Avtomatik backup: {'✅ Yoqilgan' if True else '❌ O'chirilgan'}\n"
+        f"📅 Avtomatik backup: {'✅ Yoqilgan' if True else '❌ Ochirilgan'}\n"
         f"⏰ Vaqt: Har kuni soat 02:00\n"
         f"📊 Saqlash: 30 kun\n"
     )
