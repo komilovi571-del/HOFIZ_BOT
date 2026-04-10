@@ -1,0 +1,14 @@
+# HOFIZ BOT — Railway Bot Service konfiguratsiyasi
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile.bot"
+
+[deploy]
+# DB migratsiyasini bajargandan keyin botni ishga tushirish
+startCommand = "alembic upgrade head && python -m src.bot.main"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Bot polling rejimida ishlaydi — web server yo'q
+# BOT_MODE=polling bo'lishi kerak (default)

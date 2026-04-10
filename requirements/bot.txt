@@ -1,0 +1,3 @@
+# HOFIZ BOT — Bot kutubxonalari
+-r base.txt
+aiogram>=3.4
