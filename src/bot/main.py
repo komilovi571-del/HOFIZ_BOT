@@ -1,8 +1,6 @@
 """HOFIZ BOT — Asosiy entry point."""
 from __future__ import annotations
 
-print("=== HOFIZ BOT main.py YUKLANMOQDA ===", flush=True)
-
 import asyncio
 import logging
 import sys
@@ -13,17 +11,13 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
-print("=== aiogram imports OK ===", flush=True)
 
 from src.common.config import settings
-print("=== config import OK ===", flush=True)
 from src.bot.services.redis_service import RedisService
 from src.db.engine import engine
 from src.db.models import Base
-print("=== services imports OK ===", flush=True)
 
 from src.bot.handlers import start, media_download, music_recognition, inline_mode, subscription, admin
-print("=== handlers imports OK ===", flush=True)
 
 from src.bot.middlewares.logging_mw import LoggingMiddleware
 from src.bot.middlewares.rate_limit import RateLimitMiddleware
@@ -161,13 +155,10 @@ async def run_webhook() -> None:
 
 def main() -> None:
     """Asosiy funksiya."""
-    print("=== main() BOSHLANDI ===", flush=True)
     try:
         if settings.bot_mode == "webhook":
-            print("=== webhook rejimi ===", flush=True)
             asyncio.run(run_webhook())
         else:
-            print("=== polling rejimi ===", flush=True)
             asyncio.run(run_polling())
     except Exception as e:
         print(f"FATAL ERROR: {e}", flush=True)
