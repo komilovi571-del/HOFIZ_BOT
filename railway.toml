@@ -5,7 +5,7 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile.bot"
 
 [deploy]
-startCommand = "alembic upgrade head && python -u -m src.bot.main"
+startCommand = "alembic upgrade head; echo '=== ALEMBIC DONE ==='; python -u -m src.bot.main"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
