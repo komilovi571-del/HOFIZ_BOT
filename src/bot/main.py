@@ -1,57 +1,28 @@
 """HOFIZ BOT — Asosiy entry point."""
 from __future__ import annotations
 
-import sys
-print(">>> [1/5] Python started, importing stdlib...", flush=True)
-
 import asyncio
 import logging
+import sys
 
-print(">>> [2/5] Importing aiogram...", flush=True)
-try:
-    from aiogram import Bot, Dispatcher
-    from aiogram.client.default import DefaultBotProperties
-    from aiogram.enums import ParseMode
-    from aiogram.fsm.storage.redis import RedisStorage
-    from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
-    from aiohttp import web
-    print(">>> [2/5] aiogram OK", flush=True)
-except Exception as e:
-    print(f">>> IMPORT ERROR (aiogram): {e}", flush=True)
-    raise
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+from aiogram.fsm.storage.redis import RedisStorage
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
+from aiohttp import web
 
-print(">>> [3/5] Importing config & services...", flush=True)
-try:
-    from src.common.config import settings
-    from src.bot.services.redis_service import RedisService
-    from src.db.engine import engine
-    from src.db.models import Base
-    print(f">>> [3/5] Config OK. bot_mode={settings.bot_mode}, db_url={settings.database_url[:40]}...", flush=True)
-except Exception as e:
-    print(f">>> IMPORT ERROR (config/services): {e}", flush=True)
-    import traceback; traceback.print_exc()
-    raise
+from src.common.config import settings
+from src.bot.services.redis_service import RedisService
+from src.db.engine import engine
+from src.db.models import Base
 
-print(">>> [4/5] Importing handlers...", flush=True)
-try:
-    from src.bot.handlers import start, media_download, music_recognition, inline_mode, subscription, admin
-    print(">>> [4/5] Handlers OK", flush=True)
-except Exception as e:
-    print(f">>> IMPORT ERROR (handlers): {e}", flush=True)
-    import traceback; traceback.print_exc()
-    raise
+from src.bot.handlers import start, media_download, music_recognition, inline_mode, subscription, admin
 
-print(">>> [5/5] Importing middlewares...", flush=True)
-try:
-    from src.bot.middlewares.logging_mw import LoggingMiddleware
-    from src.bot.middlewares.rate_limit import RateLimitMiddleware
-    from src.bot.middlewares.subscription import SubscriptionCheckMiddleware
-    from src.bot.middlewares.user_reg import UserRegistrationMiddleware
-    print(">>> [5/5] Middlewares OK — All imports complete!", flush=True)
-except Exception as e:
-    print(f">>> IMPORT ERROR (middlewares): {e}", flush=True)
-    import traceback; traceback.print_exc()
-    raise
+from src.bot.middlewares.logging_mw import LoggingMiddleware
+from src.bot.middlewares.rate_limit import RateLimitMiddleware
+from src.bot.middlewares.subscription import SubscriptionCheckMiddleware
+from src.bot.middlewares.user_reg import UserRegistrationMiddleware
 
 # Logging sozlash
 logging.basicConfig(
